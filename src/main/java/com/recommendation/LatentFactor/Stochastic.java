@@ -16,6 +16,9 @@ public class Stochastic {
 
     private static Logger logger = LoggerFactory.getLogger(Stochastic.class);
 
+    private int rangeMin;
+    private int rangeMax;
+
     private int factor;
     private int iteration;
 
@@ -62,6 +65,14 @@ public class Stochastic {
 
     public void setTestFilePath(String testFilePath) {
         this.testFilePath = testFilePath;
+    }
+
+    public void setRangeMin(int rangeMin) {
+        this.rangeMin = rangeMin;
+    }
+
+    public void setRangeMax(int rangeMax) {
+        this.rangeMax = rangeMax;
     }
 
     //查找并设置最大用户和最大物品
@@ -257,11 +268,11 @@ public class Stochastic {
                 predict += (user[i][userId] * item[i][itemId]) ;
             }
             predict+= userAvg[userId] + itemAvg[itemId];
-            if(predict<0){
-                predict = 1;
+            if(predict<rangeMin){
+                predict = rangeMin;
             }
-            if(predict>5){
-                predict = 4.5;
+            if(predict>rangeMax){
+                predict = rangeMax;
             }
             RMSE+=Math.pow((predict-score),2);
         }
@@ -300,15 +311,17 @@ public class Stochastic {
         }
     }
 
-    public static void main(String[] args) {
-        Stochastic test = new Stochastic();
-        test.setAlpha(0.003);
-        test.setLambda(0.01);
-        test.setIteration(30);
-        test.setFactor(220);
-        test.setTrainFilePath("/Users/victor/Desktop/ml-latest-small/train.txt");
-        test.setTestFilePath("/Users/victor/Desktop/ml-latest-small/test.txt");
-        test.init();
-        test.doGradientDescent();
-    }
+//    public static void main(String[] args) {
+//        Stochastic test = new Stochastic();
+//        test.setAlpha(0.003);
+//        test.setLambda(0.01);
+//        test.setIteration(30);
+//        test.setFactor(220);
+//        test.setRangeMin(1);
+//        test.setRangeMax(5);
+//        test.setTrainFilePath("/Users/victor/Desktop/ml-latest-small/train.txt");
+//        test.setTestFilePath("/Users/victor/Desktop/ml-latest-small/test.txt");
+//        test.init();
+//        test.doGradientDescent();
+//    }
 }
