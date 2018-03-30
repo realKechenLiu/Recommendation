@@ -16,32 +16,40 @@ public class Stochastic {
 
     private static Logger logger = LoggerFactory.getLogger(Stochastic.class);
 
+    // 评分的范围
     private int rangeMin;
     private int rangeMax;
 
+    //因子个数和循环次数
     private int factor;
     private int iteration;
 
+    //用户数量和物品数量
     private int userNumber;
     private int itemNumber;
 
+    //学习步长和抑制因子
     private double alpha;
     private double lambda;
 
+    //用户的平均分矩阵和物品的平均分矩阵
     private double[] userAvg;
     private double[] itemAvg;
 
+    //隐因子矩阵
     private double[][] user;
     private double[][] item;
 
+    //训练集和测试集文件地址
     private String trainFilePath;
     private String testFilePath;
 
+    //用户和物品隐因子矩阵
     private Matrix userMatrix;
     private Matrix itemMatrix;
 
+    //用Map存放所有的评分记录
     private Map<Integer,LinkedHashMap<Integer,Double>> rates;
-
 
     public void setAlpha(double alpha) {
         this.alpha = alpha;
@@ -170,6 +178,7 @@ public class Stochastic {
 
     }
 
+    //初始化变量
     public void init(){
         logger.info("start to set max User number and max item number");
         try {
@@ -209,6 +218,7 @@ public class Stochastic {
         logger.info("finish init \n");
     }
 
+    //针对某一条数据进行随机梯度下降
     public void stochasticGradientDescent(int userId, int itemId, double score){
         userMatrix = new Matrix(user);
         itemMatrix = new Matrix(item);
@@ -230,6 +240,7 @@ public class Stochastic {
         itemMatrix = new Matrix(item);
     }
 
+    //计算损失函数
     public double costFunction(){
         int count = 0;
         double totalCost = 0.0;
@@ -250,6 +261,7 @@ public class Stochastic {
         return totalCost/count;
     }
 
+    //进行预测
     public double predict() throws FileNotFoundException {
         logger.info("start to calculate prediction ");
         int count = 0;
